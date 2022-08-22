@@ -1,16 +1,25 @@
 // initialize server
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 
 // import additional packages
 const path = require('path');
+const cors = require('cors');
 
 // import endpoints
 
 // use additional packages
+app.use(
+  cors({
+    origin: ['http://localhost:8000', 'http://localhost:3000'],
+  })
+);
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(helmet());
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '/client/build')));
