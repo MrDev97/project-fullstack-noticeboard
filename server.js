@@ -10,7 +10,7 @@ const cors = require('cors');
 
 // import endpoints
 const usersRoutes = require('./routes/users.routes');
-const noticesRoutes = require('./routes/notices.routes');
+const adsRoutes = require('./routes/ads.routes');
 
 // use additional packages
 app.use(
@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 
 // use endpoints
 app.use('/api', usersRoutes);
-app.use('/api', noticesRoutes);
+app.use('/api', adsRoutes);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/client/build/index.html'));

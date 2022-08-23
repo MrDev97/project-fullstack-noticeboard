@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongoose');
 
-const noticeSchema = new mongoose.Schema({
+const adSchema = new mongoose.Schema({
   title: { type: String, required: true, minlength: 10, maxlength: 50 },
   description: { type: String, required: true, minlength: 20, maxlength: 1000 },
   date: { type: Date, required: true },
@@ -11,4 +11,4 @@ const noticeSchema = new mongoose.Schema({
   user: { type: ObjectId, required: true, ref: 'User' },
 });
 
-module.exports = mongoose.model('Notice', noticeSchema);
+module.exports = mongoose.model('Ad', adSchema);

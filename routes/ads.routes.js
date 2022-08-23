@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Notice = require('../models/notice.model');
+const Ad = require('../models/ad.model');
 
-router.get('/notices', async (req, res) => {
+router.get('/ads', async (req, res) => {
   try {
-    res.json(await Notice.find().populate('user'));
+    res.json(await Ad.find().populate('user'));
   } catch (err) {
     res.status(500).json({ message: err });
   }
