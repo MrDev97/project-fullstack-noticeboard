@@ -2,7 +2,7 @@ const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 
 exports.register = async (req, res) => {
-  const { login, password, avatar, telephone } = req.body;
+  const { login, password } = req.body;
 
   if (
     login &&
@@ -15,8 +15,14 @@ exports.register = async (req, res) => {
       res.status(409).send({ message: 'User with this login already exists' });
     }
 
-    const user = new User({ login, password });
-    res.send('register');
+    const newUser = new User({
+      login,
+      password: await bcrypt.hash(password, 10),
+    });
+
+    await newUser.save();
+
+    res.status(201).send({ message: 'User ' + newUser.login + ' created!' });
   }
 };
 
