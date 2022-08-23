@@ -25,7 +25,7 @@ exports.postOne = async (req, res) => {
     const { title, description, date, price, location, user } = escapeHTML(
       req.body
     );
-    // const image = req.file.path; - Implement with multer
+    const image = req.file.path;
 
     const userMatch = await User.findOne({ login: user.login });
 
@@ -74,7 +74,7 @@ exports.deleteOne = async (req, res) => {
 exports.putOne = async (req, res) => {
   try {
     const { title, description, date, price, location } = escapeHTML(req.body);
-    // const image = req.file.path; - Implement with multer
+    const image = req.file.path;
 
     const usr = await Ad.findById(req.params.id);
     if (usr) {
