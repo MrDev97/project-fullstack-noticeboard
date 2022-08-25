@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const session = require('express-session');
+const shortid = require('shortid');
 
 // import additional packages
 const path = require('path');
@@ -22,6 +24,7 @@ app.use(
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(session({ secret: shortid.generate() }));
 
 app.use(helmet());
 
