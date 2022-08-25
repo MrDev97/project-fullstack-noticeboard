@@ -57,14 +57,16 @@ exports.login = async (req, res) => {
       password &&
       typeof password === 'string'
     ) {
-      const userCheck = await User.findOne({ login });
+      const user = await User.findOne({ login });
 
-      if (!userCheck) {
+      if (!user) {
         return res.status(400).send({ message: 'Login or user are incorrect' });
       }
 
-      if (bcrypt.compareSync(password, userCheck.password)) {
+      if (bcrypt.compareSync(password, user.password)) {
         res.status(200).send({ message: 'Login successful' });
+        req.session.login = user.login;
+        console.log(req.session.login);
       } else {
         return res.status(400).send({ message: 'Login or user are incorrect' });
       }
@@ -73,5 +75,14 @@ exports.login = async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  console.log(req.session.login);
+  if (req.session.login) {
+    res.send({ login: req.session.login });
+  } else {
+    res.status(401).send({ message: 'Unauthorized' });
   }
 };
