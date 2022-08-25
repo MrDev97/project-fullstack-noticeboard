@@ -45,6 +45,10 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    for (let param in req.body) {
+      req.body[param] = escapeHTML(req.body[param]);
+    }
+
     const { login, password } = req.body;
 
     if (
