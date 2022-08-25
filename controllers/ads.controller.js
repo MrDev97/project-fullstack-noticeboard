@@ -12,9 +12,9 @@ exports.getAll = async (req, res) => {
 
 exports.getOne = async (req, res) => {
   try {
-    const usr = await Ad.findById(req.params.id);
-    if (!usr) res.status(404).json({ message: 'Not found' });
-    else res.json(usr);
+    const ad = await Ad.findById(req.params.id);
+    if (!ad) res.status(404).json({ message: 'Not found' });
+    else res.json(ad);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -22,12 +22,14 @@ exports.getOne = async (req, res) => {
 
 exports.postOne = async (req, res) => {
   try {
-    const { title, description, date, price, location, user } = escapeHTML(
-      req.body
-    );
+    for (let param in req.body) {
+      req.body[param] = escapeHTML(req.body[param]);
+    }
+
+    const { title, description, date, price, location, user } = req.body;
     const image = req.file.path;
 
-    const userMatch = await User.findOne({ login: user.login });
+    const userMatch = await User.findOne({ login: user });
 
     if (!userMatch) {
       res.status(409).json({ message: 'User does not exist!' });
@@ -39,7 +41,7 @@ exports.postOne = async (req, res) => {
         image,
         price,
         location,
-        user,
+        user: userMatch._id,
       });
       await newAd.save();
       res.json({ message: 'Ad Successfully Added!' });
@@ -73,11 +75,15 @@ exports.deleteOne = async (req, res) => {
 
 exports.putOne = async (req, res) => {
   try {
-    const { title, description, date, price, location } = escapeHTML(req.body);
+    for (let param in req.body) {
+      req.body[param] = escapeHTML(req.body[param]);
+    }
+
+    const { title, description, date, price, location } = req.body;
     const image = req.file.path;
 
-    const usr = await Ad.findById(req.params.id);
-    if (usr) {
+    const ad = await Ad.findById(req.params.id);
+    if (ad) {
       const updatedAd = await Ad.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -88,6 +94,7 @@ exports.putOne = async (req, res) => {
             image,
             price,
             location,
+            user: ad.user,
           },
         },
         { new: true }
