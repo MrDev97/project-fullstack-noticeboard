@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const session = require('express-session');
 const shortid = require('shortid');
+const MongoStore = require('connect-mongo');
 
 // import additional packages
 const path = require('path');
@@ -21,10 +22,10 @@ app.use(
     origin: ['http://localhost:8000', 'http://localhost:3000'],
   })
 );
+
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(session({ secret: shortid.generate() }));
 
 app.use(helmet());
 
@@ -47,14 +48,14 @@ app.use((req, res) => {
 const NODE_ENV = process.env.NODE_ENV;
 const MONGODB_USERNAME = process.env.MONGODB_USERNAME;
 const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
+const dbConnectionURL = `mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@noticeboarddb.y1yzwgp.mongodb.net/NoticeBoardDB`;
+
 let dbUri = '';
 
-if (NODE_ENV === 'production')
-  dbUri = `mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@noticeboarddb.y1yzwgp.mongodb.net/NoticeBoardDB`;
+if (NODE_ENV === 'production') dbUri = dbConnectionURL;
 else if (NODE_ENV === 'test')
   dbUri = 'mongodb://localhost:27017/NoticeBoardDBtest';
-else
-  dbUri = `mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@noticeboarddb.y1yzwgp.mongodb.net/NoticeBoardDB`;
+else dbUri = dbConnectionURL;
 // connects our backend code with the database based on Node environment
 mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
@@ -65,6 +66,17 @@ db.once('open', () => {
   }
 });
 db.on('error', (err) => console.log('Error ' + err));
+
+app.use(
+  session({
+    secret: shortid.generate(),
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: dbUri,
+    }),
+  })
+);
 
 const server = app.listen(process.env.PORT || 8000, () => {
   if (NODE_ENV !== 'test') {
