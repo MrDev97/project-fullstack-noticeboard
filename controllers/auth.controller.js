@@ -1,10 +1,15 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
+const escapeHTML = require('../utils/escapeHTML');
 
 exports.register = async (req, res) => {
   try {
+    for (let param in req.body) {
+      req.body[param] = escapeHTML(req.body[param]);
+    }
+
     const { login, password, telephone } = req.body;
-    const avatar = req.file.path;
+    // const avatar = req.file.path;
 
     if (
       login &&
@@ -23,7 +28,7 @@ exports.register = async (req, res) => {
       const newUser = new User({
         login,
         password: await bcrypt.hash(password, 10),
-        avatar,
+        // avatar,
         telephone,
       });
 
