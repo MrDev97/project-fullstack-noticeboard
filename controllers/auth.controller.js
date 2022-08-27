@@ -1,6 +1,7 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const escapeHTML = require('../utils/escapeHTML');
+const getImageFileType = require('../utils/getImageFileType');
 
 exports.register = async (req, res) => {
   try {
@@ -11,12 +12,15 @@ exports.register = async (req, res) => {
     const { login, password, telephone } = req.body;
     const avatar = req.file.filename;
 
+    const fileType = req.file ? await getImageFileType(req.file) : 'Unknown';
+
     if (
       login &&
       typeof login === 'string' &&
       password &&
       typeof password === 'string' &&
-      req.file
+      req.file &&
+      ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
     ) {
       const userCheck = await User.findOne({ login });
 
