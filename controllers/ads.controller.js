@@ -1,6 +1,6 @@
 const Ad = require('../models/ad.model');
-const User = require('../models/user.model');
 const escapeHTML = require('../utils/escapeHTML');
+const getImageFileType = require('../utils/getImageFileType');
 
 exports.getAll = async (req, res) => {
   try {
@@ -26,14 +26,26 @@ exports.postOne = async (req, res) => {
       req.body[param] = escapeHTML(req.body[param]);
     }
 
-    const { title, description, date, price, location, user } = req.body;
-    const image = req.file.path;
+    const { title, description, date, price, location } = req.body;
+    const image = req.file.filename;
+    const user = req.session.user;
 
-    const userMatch = await User.findOne({ login: user });
+    const fileType = req.file ? await getImageFileType(req.file) : 'Unknown';
 
-    if (!userMatch) {
-      res.status(409).json({ message: 'User does not exist!' });
-    } else {
+    if (
+      title &&
+      typeof title === 'string' &&
+      description &&
+      typeof description === 'string' &&
+      date &&
+      typeof date === 'string' &&
+      price &&
+      typeof price === 'number' &&
+      location &&
+      typeof location === 'string' &&
+      req.file &&
+      ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
+    ) {
       const newAd = new Ad({
         title,
         description,
@@ -41,10 +53,13 @@ exports.postOne = async (req, res) => {
         image,
         price,
         location,
-        user: userMatch._id,
+        user: user.id,
       });
       await newAd.save();
-      res.json({ message: 'Ad Successfully Added!' });
+      res.status(201).json({ message: 'Ad Successfully Created!' });
+    } else {
+      fs.unlinkSync(req.file.path);
+      res.status(400).json({ message: 'Bad Request' });
     }
   } catch (err) {
     res.status(500).json({ message: err.messsage });
@@ -53,21 +68,15 @@ exports.postOne = async (req, res) => {
 
 exports.deleteOne = async (req, res) => {
   try {
-    // const { user } = escapeHTML(req.body);
+    const user = req.session.user;
 
-    // const userMatch = await User.findOne({ user: user._id });
-    // const adMatch = await Ad.findOne({ user: userMatch._id });
-
-    // if (!userMatch) {
-    //   res
-    //     .status(403)
-    //     .json({ message: 'Request cannot be processed by this user.' });
-    // }
-
-    const ad = await Ad.findOneAndDelete({ _id: req.params.id });
+    const ad = await Ad.findOneAndDelete({
+      _id: req.params.id,
+      user: user.id,
+    });
     if (ad) {
       res.json({ message: 'Successfully Deleted!' });
-    } else res.status(404).json({ message: 'Not found...' });
+    } else res.status(403).json({ message: 'Forbidden Action!' });
   } catch (err) {
     res.status(500).json({ message: err.messsage });
   }
@@ -80,27 +89,52 @@ exports.putOne = async (req, res) => {
     }
 
     const { title, description, date, price, location } = req.body;
-    const image = req.file.path;
+    const image = req.file.filename;
+    const user = req.session.user;
 
-    const ad = await Ad.findById(req.params.id);
-    if (ad) {
-      const updatedAd = await Ad.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $set: {
-            title,
-            description,
-            date,
-            image,
-            price,
-            location,
-            user: ad.user,
+    const fileType = req.file ? await getImageFileType(req.file) : 'Unknown';
+
+    if (
+      title &&
+      typeof title === 'string' &&
+      description &&
+      typeof description === 'string' &&
+      date &&
+      typeof date === 'string' &&
+      price &&
+      typeof price === 'number' &&
+      location &&
+      typeof location === 'string' &&
+      req.file &&
+      ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
+    ) {
+      const ad = await Ad.findOne({ _id: req.params.id, user: user.id });
+
+      if (ad) {
+        const updatedAd = await Ad.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            $set: {
+              title,
+              description,
+              date,
+              image,
+              price,
+              location,
+              user: user.id,
+            },
           },
-        },
-        { new: true }
-      );
-      res.json({ message: 'Successfully Added!' });
-    } else res.status(404).json({ message: 'Not found...' });
+          { new: true }
+        );
+        res.status(201).json({ message: 'Ad Successfully Updated!' });
+      } else {
+        fs.unlinkSync(req.file.path);
+        res.status(403).json({ message: 'Forbidden Action!' });
+      }
+    } else {
+      fs.unlinkSync(req.file.path);
+      res.status(400).json({ message: 'Bad Request!' });
+    }
   } catch (err) {
     res.status(500).json({ message: err.messsage });
   }
