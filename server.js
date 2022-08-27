@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(
   session({
-    secret: 'shortid.generate()',
+    secret: shortid.generate(),
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
