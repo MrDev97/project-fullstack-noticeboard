@@ -9,13 +9,14 @@ exports.register = async (req, res) => {
     }
 
     const { login, password, telephone } = req.body;
-    // const avatar = req.file.path;
+    const avatar = req.file.filename;
 
     if (
       login &&
       typeof login === 'string' &&
       password &&
-      typeof password === 'string'
+      typeof password === 'string' &&
+      req.file
     ) {
       const userCheck = await User.findOne({ login });
 
@@ -28,7 +29,7 @@ exports.register = async (req, res) => {
       const newUser = new User({
         login,
         password: await bcrypt.hash(password, 10),
-        // avatar,
+        avatar,
         telephone,
       });
 
