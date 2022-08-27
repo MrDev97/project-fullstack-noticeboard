@@ -25,9 +25,12 @@ exports.register = async (req, res) => {
       const userCheck = await User.findOne({ login });
 
       if (userCheck) {
-        return res
-          .status(409)
-          .send({ message: 'User with this login already exists' });
+        return (
+          fs.unlinkSync(req.file.path),
+          res
+            .status(409)
+            .send({ message: 'User with this login already exists' })
+        );
       }
 
       const newUser = new User({
