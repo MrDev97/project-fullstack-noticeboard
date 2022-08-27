@@ -80,3 +80,12 @@ exports.login = async (req, res) => {
 exports.getUser = async (req, res) => {
   res.status(200).send(req.session.user);
 };
+
+exports.logout = async (req, res) => {
+  try {
+    req.session.destroy();
+    res.status(200).send({ message: 'User logged out' });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
