@@ -12,7 +12,6 @@ const path = require('path');
 const cors = require('cors');
 
 // import endpoints
-const usersRoutes = require('./routes/users.routes');
 const adsRoutes = require('./routes/ads.routes');
 const authRoutes = require('./routes/auth.routes');
 
@@ -51,7 +50,6 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 app.use(express.static(path.join(__dirname, '/public')));
 
 // use endpoints
-app.use('/api', usersRoutes);
 app.use('/api', adsRoutes);
 app.use('/api', authRoutes);
 
