@@ -44,9 +44,11 @@ exports.register = async (req, res) => {
 
       res.status(201).send({ message: 'User ' + newUser.login + ' created!' });
     } else {
+      fs.unlinkSync(req.file.path);
       res.status(400).json({ message: 'Bad request' });
     }
   } catch (err) {
+    fs.unlinkSync(req.file.path);
     res.status(500).json({ message: err.message });
   }
 };

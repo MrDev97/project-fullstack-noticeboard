@@ -12,7 +12,7 @@ router.get('/ads/:id', ad.getOne);
 router.post(
   '/ads',
   authMiddleware,
-  imageUpload.single('ad__photo'),
+  imageUpload.single('image'),
   ad.postOne
 );
 

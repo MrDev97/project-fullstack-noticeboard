@@ -32,6 +32,8 @@ exports.postOne = async (req, res) => {
 
     const fileType = req.file ? await getImageFileType(req.file) : 'Unknown';
 
+    console.log(image)
+
     if (
       title &&
       typeof title === 'string' &&
@@ -46,6 +48,7 @@ exports.postOne = async (req, res) => {
       req.file &&
       ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
     ) {
+      console.log(image);
       const newAd = new Ad({
         title,
         description,
@@ -62,6 +65,7 @@ exports.postOne = async (req, res) => {
       res.status(400).json({ message: 'Bad Request' });
     }
   } catch (err) {
+    fs.unlinkSync(req.file.path);
     res.status(500).json({ message: err.messsage });
   }
 };
@@ -136,6 +140,7 @@ exports.putOne = async (req, res) => {
       res.status(400).json({ message: 'Bad Request!' });
     }
   } catch (err) {
+    fs.unlinkSync(req.file.path);
     res.status(500).json({ message: err.messsage });
   }
 };
