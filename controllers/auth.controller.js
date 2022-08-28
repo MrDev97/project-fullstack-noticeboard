@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
+const fs = require('fs'); 
 const escapeHTML = require('../utils/escapeHTML');
 const getImageFileType = require('../utils/getImageFileType');
 

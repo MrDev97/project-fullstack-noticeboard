@@ -9,19 +9,14 @@ router.get('/ads', ad.getAll);
 
 router.get('/ads/:id', ad.getOne);
 
-router.post(
-  '/ads',
-  authMiddleware,
-  imageUpload.single('image'),
-  ad.postOne
-);
+router.post('/ads', authMiddleware, imageUpload.single('image'), ad.postOne);
 
 router.delete('/ads/:id', authMiddleware, ad.deleteOne);
 
 router.put(
-  '/api/ads/:id',
+  '/ads/:id',
   authMiddleware,
-  imageUpload.single('ad__photo'),
+  imageUpload.single('image'),
   ad.putOne
 );
 

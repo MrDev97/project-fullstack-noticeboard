@@ -1,4 +1,6 @@
 const Ad = require('../models/ad.model');
+const fs = require('fs');
+const path = require('path');
 const escapeHTML = require('../utils/escapeHTML');
 const getImageFileType = require('../utils/getImageFileType');
 
@@ -32,8 +34,6 @@ exports.postOne = async (req, res) => {
 
     const fileType = req.file ? await getImageFileType(req.file) : 'Unknown';
 
-    console.log(image)
-
     if (
       title &&
       typeof title === 'string' &&
@@ -42,13 +42,13 @@ exports.postOne = async (req, res) => {
       date &&
       typeof date === 'string' &&
       price &&
-      typeof price === 'number' &&
+      typeof price === 'string' &&
       location &&
       typeof location === 'string' &&
       req.file &&
       ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
     ) {
-      console.log(image);
+      console.log(title);
       const newAd = new Ad({
         title,
         description,
@@ -78,7 +78,12 @@ exports.deleteOne = async (req, res) => {
       _id: req.params.id,
       user: user.id,
     });
+    const imagePath = `public/uploads/${ad.image}`;
+
     if (ad) {
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
       res.json({ message: 'Successfully Deleted!' });
     } else res.status(403).json({ message: 'Forbidden Action!' });
   } catch (err) {
@@ -93,7 +98,6 @@ exports.putOne = async (req, res) => {
     }
 
     const { title, description, date, price, location } = req.body;
-    const image = req.file.filename;
     const user = req.session.user;
 
     const fileType = req.file ? await getImageFileType(req.file) : 'Unknown';
@@ -106,13 +110,24 @@ exports.putOne = async (req, res) => {
       date &&
       typeof date === 'string' &&
       price &&
-      typeof price === 'number' &&
+      typeof price === 'string' &&
       location &&
-      typeof location === 'string' &&
-      req.file &&
-      ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
+      typeof location === 'string'
     ) {
       const ad = await Ad.findOne({ _id: req.params.id, user: user.id });
+      let image = ad.image;
+
+      if (
+        req.file &&
+        ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
+      ) {
+        const imagePath = `public/uploads/${ad.image}`;
+
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+        }
+        image = req.file.filename;
+      }
 
       if (ad) {
         const updatedAd = await Ad.findOneAndUpdate(
