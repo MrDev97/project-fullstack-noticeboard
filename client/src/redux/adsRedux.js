@@ -2,7 +2,7 @@ import axios from 'axios';
 import { API_URL } from '../config';
 
 // selectors
-export const getAllAds = (state) => state.ads;
+export const getAllAds = ({ ads }) => ads.data;
 export const getAdById = ({ ads }, adId) => ads.find((ad) => ad.id === adId);
 
 // action name creator
