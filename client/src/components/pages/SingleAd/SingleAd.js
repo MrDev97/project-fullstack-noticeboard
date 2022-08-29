@@ -43,7 +43,11 @@ const SingleAd = () => {
                 <span className='fw-bold'>Location: </span>
                 {adData.location}
               </Card.Text>
-              <Card.Text>
+              <Card.Text className='my-3'>
+                <span className='fw-bold'>Price: </span>
+                {adData.price}$
+              </Card.Text>
+              <Card.Text className='my-3'>
                 <span className='fw-bold'>Description: </span>
                 <br />
                 {adData.description}
