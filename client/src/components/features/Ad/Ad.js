@@ -21,7 +21,7 @@ const Ad = (props) => {
             {props.location}
           </Card.Text>
           <Link to={`/ads/${props._id}`}>
-            <Button variant='primary'>Read more</Button>
+            <Button variant='outline-warning'>Read more</Button>
           </Link>
         </Card.Body>
       </Card>
