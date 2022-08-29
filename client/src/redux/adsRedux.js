@@ -3,7 +3,7 @@ import { API_URL } from '../config';
 
 // selectors
 export const getAllAds = ({ ads }) => ads.data;
-export const getAdById = ({ ads }, adId) => ads.find((ad) => ad.id === adId);
+export const getAdById = ({ ads }, adId) => ads.data.find((ad) => ad._id === adId);
 export const getRequest = ({ ads }) => ads.request;
 
 // action name creator
