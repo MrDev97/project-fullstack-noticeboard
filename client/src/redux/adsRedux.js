@@ -4,6 +4,7 @@ import { API_URL } from '../config';
 // selectors
 export const getAllAds = ({ ads }) => ads.data;
 export const getAdById = ({ ads }, adId) => ads.find((ad) => ad.id === adId);
+export const getRequest = ({ ads }) => ads.request;
 
 // action name creator
 const reducerName = 'ads';
@@ -58,7 +59,7 @@ export const addAdRequest = (ad) => {
 // initial state
 const initialState = {
   data: [],
-  requests: {},
+  request: { pending: false, error: null, success: null },
 };
 
 // action creators
@@ -79,30 +80,17 @@ const adsReducer = (statePart = initialState, action = {}) => {
     case START_REQUEST:
       return {
         ...statePart,
-        requests: {
-          ...statePart.requests,
-          [action.payload.name]: { pending: true, error: null, success: false },
-        },
+        request: { pending: true, error: null, success: false },
       };
     case END_REQUEST:
       return {
         ...statePart,
-        requests: {
-          ...statePart.requests,
-          [action.payload.name]: { pending: false, error: null, success: true },
-        },
+        request: { pending: false, error: null, success: true },
       };
     case ERROR_REQUEST:
       return {
         ...statePart,
-        requests: {
-          ...statePart.requests,
-          [action.payload.name]: {
-            pending: false,
-            error: action.payload.error,
-            success: false,
-          },
-        },
+        request: { pending: false, error: action.error, success: false },
       };
     default:
       return statePart;

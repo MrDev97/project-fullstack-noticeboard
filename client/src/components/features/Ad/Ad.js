@@ -8,7 +8,9 @@ const Ad = (props) => {
     <Col>
       <Card>
         <Card.Body>
-          <Card.Title className='fw-bold mb-3'>{props.title}</Card.Title>
+          <Card.Title className='fw-bold mb-3 text-truncate'>
+            {props.title}
+          </Card.Title>
           <Card.Text>
             <span className='fw-bold'>Image: </span>
             {props.image}
