@@ -8,7 +8,9 @@ import { getAllAds, loadAdsRequest, getRequest } from '../../../redux/adsRedux';
 
 const Ads = () => {
   const dispatch = useDispatch();
-  const ads = useSelector(getAllAds);
+  const ads = useSelector(getAllAds).sort((a, b) => {
+    return new Date(b.date) - new Date(a.date);
+  });
   const request = useSelector(getRequest);
 
   useEffect(() => {
