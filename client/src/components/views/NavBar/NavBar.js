@@ -1,8 +1,9 @@
 import React from 'react';
 import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { loadSearchedAdsRequest } from '../../../redux/adsRedux';
 
 const NavBar = () => {
   const [searchPhrase, setSearchPhrase] = useState('');
@@ -10,13 +11,9 @@ const NavBar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch();
+    dispatch(loadSearchedAdsRequest(searchPhrase));
     setSearchPhrase('');
   };
-
-  useEffect(() => {
-    // dispatch();
-  }, [dispatch]);
 
   return (
     <Navbar bg='dark' variant='dark' expand='lg'>
@@ -43,7 +40,10 @@ const NavBar = () => {
               value={searchPhrase}
               onChange={(e) => setSearchPhrase(e.target.value)}
             />
-            <Button variant='outline-success'>Search</Button>
+            <Button type='submit' variant='outline-success'>
+              Search
+              <Link to={`/ads/search/${searchPhrase}`} />
+            </Button>
           </Form>
         </Navbar.Collapse>
       </Container>

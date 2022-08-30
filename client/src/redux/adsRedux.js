@@ -3,7 +3,8 @@ import { API_URL } from '../config';
 
 // selectors
 export const getAllAds = ({ ads }) => ads.data;
-export const getAdById = ({ ads }, adId) => ads.data.find((ad) => ad._id === adId);
+export const getAdById = ({ ads }, adId) =>
+  ads.data.find((ad) => ad._id === adId);
 export const getRequest = ({ ads }) => ads.request;
 
 // action name creator
@@ -35,6 +36,19 @@ export const loadAdsRequest = () => {
     dispatch(startRequest({ name: 'LOAD_ADS' }));
     try {
       let res = await axios.get(`${API_URL}/ads`);
+      dispatch(loadAds(res.data));
+      dispatch(endRequest({ name: 'LOAD_ADS' }));
+    } catch (e) {
+      dispatch(errorRequest({ name: 'LOAD_ADS', error: e.message }));
+    }
+  };
+};
+
+export const loadSearchedAdsRequest = (searchPhrase) => {
+  return async (dispatch) => {
+    dispatch(startRequest({ name: 'LOAD_ADS' }));
+    try {
+      let res = await axios.get(`${API_URL}/ads/search/${searchPhrase}`);
       dispatch(loadAds(res.data));
       dispatch(endRequest({ name: 'LOAD_ADS' }));
     } catch (e) {
