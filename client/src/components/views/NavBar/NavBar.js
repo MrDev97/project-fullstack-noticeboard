@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { loadSearchedAdsRequest } from '../../../redux/adsRedux';

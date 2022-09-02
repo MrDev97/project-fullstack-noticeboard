@@ -70,6 +70,32 @@ export const addAdRequest = (ad) => {
   };
 };
 
+export const editAdRequest = (ad) => {
+  return async (dispatch) => {
+    dispatch(startRequest({ name: 'EDIT_AD' }));
+    try {
+      let res = await axios.put(`${API_URL}/ads/${ad._id}`, ad);
+      dispatch(addAd(res.data));
+      dispatch(endRequest({ name: 'EDIT_AD' }));
+    } catch (e) {
+      dispatch(errorRequest({ name: 'EDIT_AD', error: e.message }));
+    }
+  };
+};
+
+export const removeAdRequest = (ad) => {
+  return async (dispatch) => {
+    dispatch(startRequest({ name: 'REMOVE_AD' }));
+    try {
+      let res = await axios.delete(`${API_URL}/ads/${ad._id}`);
+      dispatch(addAd(res.data));
+      dispatch(endRequest({ name: 'REMOVE_AD' }));
+    } catch (e) {
+      dispatch(errorRequest({ name: 'REMOVE_AD', error: e.message }));
+    }
+  };
+};
+
 // initial state
 const initialState = {
   data: [],

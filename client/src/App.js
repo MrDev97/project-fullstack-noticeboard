@@ -5,6 +5,8 @@ import NotFound from './components/pages/NotFound/NotFound.js';
 import MainLayout from './components/views/MainMenu/MainMenu';
 import SingleAd from './components/pages/SingleAd/SingleAd.js';
 import Search from './components/features/Search/Search';
+import AddAdForm from './components/features/AddAdForm/AddAdForm.js';
+import EditAdForm from './components/features/EditAdForm/EditAdForm.js';
 
 const App = () => {
   return (
@@ -12,8 +14,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route exact path='/ads/:adId' element={<SingleAd />} />
-        {/* <Route path='/ads/add' element={<AddAd />} /> */}
-        {/* <Route exact path='/ads/edit/:id' element={<EditAd />} /> */}
+        <Route path='/ads/add' element={<AddAdForm />} />
+        <Route exact path='/ads/edit/:adId' element={<EditAdForm />} />
         {/* <Route path='/auth/login' element={<SignIn />} /> */}
         {/* <Route path='/auth/register' element={<SignUp />} /> */}
         <Route path='/ads/search/:searchPhrase' element={<Search />} />

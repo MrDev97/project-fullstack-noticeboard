@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import { getAdById } from '../../../redux/adsRedux';
 import { Link, Navigate } from 'react-router-dom';
-// import DeleteAd from '../DeleteAd/DeleteAd';
+import DeleteAd from '../../features/DeleteAd/DeleteAd';
 import { dateToString } from '../../../utils/dateToString';
 import { Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
@@ -52,12 +52,14 @@ const SingleAd = () => {
                 <br />
                 {adData.description}
               </Card.Text>
-              {/* <Link to={`/ads/edit/${adId}`}>
+              <div className='mt-3 d-flex justify-content-end align-items-start'>
+                <Link to={`/ads/edit/${adId}`}>
                   <Button className='m-2' variant='outline-info'>
                     Edit
                   </Button>
-                </Link> */}
-              {/* <DeleteAd id={adData.id} /> */}
+                </Link>
+                <DeleteAd id={adData._id} />
+              </div>
             </Card.Body>
           </Col>
         </Row>

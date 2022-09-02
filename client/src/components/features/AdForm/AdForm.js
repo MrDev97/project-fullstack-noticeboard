@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
@@ -15,6 +16,8 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [location, setLocation] = useState(props.location || '');
   const [dateError, setDateError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
+
+  const user = 'Jim Carrey';
 
   const {
     register,
@@ -69,7 +72,7 @@ const AdForm = ({ action, actionText, ...props }) => {
       <Form.Group className='mb-4 col-md-6' controlId='formAdDate'>
         <Form.Label>Published</Form.Label>
         <DatePicker
-          selected={publishedDate}
+          selected={new Date(publishedDate)}
           onChange={(date) => setPublishedDate(date)}
           placeholder='Enter Publish Date'
           dateFormat='dd-MM-yyyy'
@@ -113,11 +116,10 @@ const AdForm = ({ action, actionText, ...props }) => {
         )}
       </Form.Group>
 
-      <Form.Group className='mb-4' controlId='formAdImage'>
+      {/* <Form.Group className='mb-4 col-md-6' controlId='formAdImage'>
         <Form.Label>Image</Form.Label>
         <Form.Control
           {...register('image', { required: true })}
-          as='textarea'
           type='file'
           value={image}
           onChange={(e) => setImage(e.target.value)}
@@ -127,7 +129,7 @@ const AdForm = ({ action, actionText, ...props }) => {
             This field is required.
           </small>
         )}
-      </Form.Group>
+      </Form.Group> */}
 
       <Form.Group className='mb-4' controlId='formAdDescription'>
         <Form.Label>Description</Form.Label>
