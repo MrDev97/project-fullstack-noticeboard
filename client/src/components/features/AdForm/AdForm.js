@@ -18,7 +18,7 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [descriptionError, setDescriptionError] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  const user = 'Jim Carrey';
+  const user = 'Mike Willer';
 
   const {
     register,
@@ -117,7 +117,7 @@ const AdForm = ({ action, actionText, ...props }) => {
         />
         {errors.price && (
           <small className='d-block form-text text-danger mt-2'>
-            This field is required. Cannot be lower than 0. 
+            This field is required. Cannot be lower than 0.
           </small>
         )}
       </Form.Group>

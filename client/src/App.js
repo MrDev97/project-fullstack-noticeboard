@@ -7,6 +7,7 @@ import SingleAd from './components/pages/SingleAd/SingleAd.js';
 import Search from './components/features/Search/Search';
 import AddAdForm from './components/features/AddAdForm/AddAdForm.js';
 import EditAdForm from './components/features/EditAdForm/EditAdForm.js';
+import SignUp from './components/pages/SignUpForm/SignUpForm.js';
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
         <Route path='/ads/add' element={<AddAdForm />} />
         <Route exact path='/ads/edit/:adId' element={<EditAdForm />} />
         {/* <Route path='/auth/login' element={<SignIn />} /> */}
-        {/* <Route path='/auth/register' element={<SignUp />} /> */}
+        <Route path='/auth/register' element={<SignUp />} />
         <Route path='/ads/search/:searchPhrase' element={<Search />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

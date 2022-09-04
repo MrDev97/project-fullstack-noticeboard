@@ -32,17 +32,20 @@ const NavBar = () => {
             <Nav.Link as={NavLink} to='/'>
               Home
             </Nav.Link>
+            <Nav.Link as={NavLink} to='/auth/register'>
+              Sign Up
+            </Nav.Link>
           </Nav>
-          <Form onSubmit={handleSubmit} className='d-flex my-2 my-md-0'>
+          <Form onSubmit={handleSubmit} className='d-flex my-2'>
             <Form.Control
               type='search'
               placeholder='Search'
-              className='me-2'
+              className='me-2 my-2'
               aria-label='Search'
               value={searchPhrase}
               onChange={(e) => setSearchPhrase(e.target.value)}
             />
-            <Button type='submit' variant='outline-success'>
+            <Button type='submit' className='align-self-center' variant='outline-success'>
               Search
             </Button>
           </Form>
