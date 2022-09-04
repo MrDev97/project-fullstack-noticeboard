@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { addAdRequest } from '../../../redux/adsRedux';
+import { addRegistrationRequest } from '../../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState(null);
   const [telephone, setTelephone] = useState('');
   const [avatarError, setAvatarError] = useState(false);
 
@@ -24,15 +24,15 @@ const SignUp = () => {
 
   const handleSubmit = () => {
     setAvatarError(!avatar);
+
+    const fd = new FormData();
+    fd.append('login', login);
+    fd.append('password', password);
+    fd.append('avatar', avatar);
+    fd.append('telephone', telephone);
+
     if (avatar) {
-      dispatch(
-        addAdRequest({
-          login,
-          password,
-          avatar,
-          telephone,
-        })
-      );
+      dispatch(addRegistrationRequest(fd));
       navigate('/');
       setAvatarError('');
       setLogin('');
@@ -48,6 +48,8 @@ const SignUp = () => {
       className='col-md-8 mx-auto my-4'
       encType='multipart/form-data'
     >
+      <h1 className='my-4'>Sign Up</h1>
+
       <Form.Group className='mb-4 col-md-6' controlId='formLogin'>
         <Form.Label>Login</Form.Label>
         <Form.Control
@@ -82,7 +84,10 @@ const SignUp = () => {
 
       <Form.Group className='mb-4 col-md-6' controlId='formAvatar'>
         <Form.Label>Avatar</Form.Label>
-        <Form.Control type='file' />
+        <Form.Control
+          type='file'
+          onChange={(e) => setAvatar(e.target.files[0])}
+        />
         {avatarError && (
           <small className='d-block form-text text-danger mt-2'>
             Avatar is required.
@@ -91,10 +96,10 @@ const SignUp = () => {
       </Form.Group>
 
       <Form.Group className='mb-4 col-md-6' controlId='formTelephone'>
-        <Form.Label>Telephone</Form.Label>
+        <Form.Label>Phone Number</Form.Label>
         <Form.Control
           {...register('telephone', { required: true })}
-          type='text'
+          type='tel'
           value={telephone}
           onChange={(e) => setTelephone(e.target.value)}
           placeholder='Telephone'

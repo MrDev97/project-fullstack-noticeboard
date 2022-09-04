@@ -124,7 +124,10 @@ const AdForm = ({ action, actionText, ...props }) => {
 
       <Form.Group className='mb-4 col-md-6' controlId='formAdImage'>
         <Form.Label>Image</Form.Label>
-        <Form.Control type='file' />
+        <Form.Control
+          type='file'
+          onChange={(e) => setImage(e.target.files[0])}
+        />
         {image && (
           <small className='d-block form-text text-secondary mt-2'>
             Uploaded file: {image}

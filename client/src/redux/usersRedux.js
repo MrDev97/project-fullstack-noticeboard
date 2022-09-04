@@ -19,15 +19,12 @@ export const startRequest = (payload) => ({ payload, type: START_REQUEST });
 export const endRequest = (payload) => ({ payload, type: END_REQUEST });
 export const errorRequest = (payload) => ({ payload, type: ERROR_REQUEST });
 
-// export const addUser = (payload) => ({ payload, type: ADD_USER });
-
 // thunks
 export const addRegistrationRequest = (user) => {
   return async (dispatch) => {
     dispatch(startRequest({ name: 'ADD_USER' }));
     try {
-      let res = await axios.post(`${API_URL}/users`, user);
-      //   dispatch(addUser(res.data));
+      let res = await axios.post(`${API_URL}/auth/register`, user);
       dispatch(endRequest({ name: 'ADD_USER' }));
     } catch (e) {
       dispatch(errorRequest({ name: 'ADD_USER', error: e.message }));
