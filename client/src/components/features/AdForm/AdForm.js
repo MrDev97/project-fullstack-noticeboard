@@ -30,16 +30,18 @@ const AdForm = ({ action, actionText, ...props }) => {
     setDescriptionError(!description);
     setDateError(!publishedDate);
     setImageError(!image);
+
+    const fd = new FormData();
+    fd.append('title', title);
+    fd.append('description', description);
+    fd.append('date', publishedDate);
+    fd.append('image', image);
+    fd.append('price', price);
+    fd.append('location', location);
+    fd.append('user', user);
+
     if (description && publishedDate && image) {
-      action({
-        title,
-        description,
-        date: publishedDate,
-        image,
-        price,
-        location,
-        user,
-      });
+      action(fd);
       setTitle('');
       setDescription('');
       setPublishedDate('');
@@ -130,7 +132,7 @@ const AdForm = ({ action, actionText, ...props }) => {
         />
         {image && (
           <small className='d-block form-text text-secondary mt-2'>
-            Uploaded file: {image}
+            Uploaded file: {image.name}
           </small>
         )}
         {imageError && (
