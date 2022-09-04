@@ -8,6 +8,7 @@ import DeleteAd from '../../features/DeleteAd/DeleteAd';
 import { dateToString } from '../../../utils/dateToString';
 import { Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
+import { IMGS_URL } from '../../../config';
 
 const SingleAd = () => {
   const { adId } = useParams();
@@ -19,14 +20,23 @@ const SingleAd = () => {
       <Card bg={'light'} className='mt-5 justify-content-center'>
         <Row className='flex-row-reverse'>
           <Col className='col-12 col-md-5 align-self-center'>
-            <Card.Img variant='top' src={adData.image} />
+            <Card.Img
+              variant='top'
+              crossOrigin='anonymous'
+              src={IMGS_URL + adData.image}
+            />
           </Col>
           <Col className='col-12 col-md-7'>
             <Card.Body>
               <Card.Title className='fw-bold mb-3 fs-2'>
                 {adData.title}
               </Card.Title>
-              <Image className='roundedCircle mb-3' src={adData.user.avatar} />
+              <Image
+                className='rounded-circle mb-3'
+                style={{ resizeMode: 'cover', maxHeight: 60, maxWidth: 60 }}
+                crossOrigin='anonymous'
+                src={IMGS_URL + adData.user.avatar}
+              />
               <Card.Text className='mb-0'>
                 <span className='fw-bold'>User: </span>
                 {adData.user.login}

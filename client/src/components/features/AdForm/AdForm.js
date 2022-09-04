@@ -16,6 +16,7 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [location, setLocation] = useState(props.location || '');
   const [dateError, setDateError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const user = 'Jim Carrey';
 
@@ -28,7 +29,8 @@ const AdForm = ({ action, actionText, ...props }) => {
   const handleSubmit = () => {
     setDescriptionError(!description);
     setDateError(!publishedDate);
-    if (description && publishedDate) {
+    setImageError(!image);
+    if (description && publishedDate && image) {
       action({
         title,
         description,
@@ -48,7 +50,11 @@ const AdForm = ({ action, actionText, ...props }) => {
   };
 
   return (
-    <Form onSubmit={validate(handleSubmit)} className='col-md-8 mx-auto my-4'>
+    <Form
+      onSubmit={validate(handleSubmit)}
+      className='col-md-8 mx-auto my-4'
+      encType='multipart/form-data'
+    >
       <Form.Group className='mb-4 col-md-6' controlId='formAdTitle'>
         <Form.Label>Title</Form.Label>
         <Form.Control
@@ -103,7 +109,7 @@ const AdForm = ({ action, actionText, ...props }) => {
       <Form.Group className='mb-4 col-md-6' controlId='formAdPrice'>
         <Form.Label>Price</Form.Label>
         <Form.Control
-          {...register('price', { required: true })}
+          {...register('price', { required: true, min: 0, max: 99999999 })}
           type='number'
           value={price}
           onChange={(e) => setPrice(e.target.value)}
@@ -111,25 +117,25 @@ const AdForm = ({ action, actionText, ...props }) => {
         />
         {errors.price && (
           <small className='d-block form-text text-danger mt-2'>
-            This field is required.
+            This field is required. Cannot be lower than 0. 
           </small>
         )}
       </Form.Group>
 
-      {/* <Form.Group className='mb-4 col-md-6' controlId='formAdImage'>
+      <Form.Group className='mb-4 col-md-6' controlId='formAdImage'>
         <Form.Label>Image</Form.Label>
-        <Form.Control
-          {...register('image', { required: true })}
-          type='file'
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-        />
-        {errors.image && (
+        <Form.Control type='file' />
+        {image && (
+          <small className='d-block form-text text-secondary mt-2'>
+            Uploaded file: {image}
+          </small>
+        )}
+        {imageError && (
           <small className='d-block form-text text-danger mt-2'>
             This field is required.
           </small>
         )}
-      </Form.Group> */}
+      </Form.Group>
 
       <Form.Group className='mb-4' controlId='formAdDescription'>
         <Form.Label>Description</Form.Label>

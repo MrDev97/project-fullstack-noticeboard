@@ -2,12 +2,17 @@ import React from 'react';
 import { Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { dateToString } from '../../../utils/dateToString';
+import { IMGS_URL } from '../../../config';
 
 const Ad = (props) => {
   return (
     <Col>
       <Card bg={'light'}>
-        <Card.Img variant='top' src={props.image} />
+        <Card.Img
+          style={{ resizeMode: 'cover', maxHeight: 400 }}
+          crossOrigin='anonymous'
+          src={IMGS_URL + props.image}
+        />
         <Card.Body>
           <Card.Title className='fw-bold mb-3 text-truncate'>
             {props.title}
