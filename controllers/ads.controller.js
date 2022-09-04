@@ -163,7 +163,7 @@ exports.putOne = async (req, res) => {
 exports.searchByTitle = async (req, res) => {
   try {
     const searchResult = await Ad.find({
-      title: { $regex: req.params.searchPhrase, $options: 'smix' },
+      title: { $regex: req.params.searchPhrase, $options: 'smi' },
     });
 
     res.json(searchResult);
