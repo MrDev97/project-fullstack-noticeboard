@@ -1,9 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Spinner, Row, Col } from 'react-bootstrap';
+import { Alert, Progress } from 'reactstrap';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { addRegistrationRequest } from '../../../redux/usersRedux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addRegistrationRequest, getRequest } from '../../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
@@ -12,6 +13,9 @@ const SignUp = () => {
   const [avatar, setAvatar] = useState(null);
   const [telephone, setTelephone] = useState('');
   const [avatarError, setAvatarError] = useState(false);
+  const [status, setStatus] = useState(false);
+
+  const request = useSelector(getRequest);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,8 +36,12 @@ const SignUp = () => {
     fd.append('telephone', telephone);
 
     if (avatar) {
+      setStatus(true);
       dispatch(addRegistrationRequest(fd));
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+        setStatus(false);
+      }, 3000);
       setAvatarError('');
       setLogin('');
       setPassword('');
@@ -49,6 +57,27 @@ const SignUp = () => {
       encType='multipart/form-data'
     >
       <h1 className='my-4'>Sign Up</h1>
+
+      {request && request.pending && (
+        <Progress animated color='primary' value={50} />
+      )}
+      {request && request.error && status && (
+        <Alert color='danger'>{request.error}</Alert>
+      )}
+      {request && request.success && status && (
+        <Row className='mb-3'>
+          <Col className='col-10 align-self-center'>
+            <Alert className='m-0' color='success'>
+              You have been Successfully registered! Redirecting...
+            </Alert>
+          </Col>
+          <Col className='col-2 align-self-center'>
+            <Spinner animation='border' role='status'>
+              <span className='visually-hidden'>Loading...</span>
+            </Spinner>
+          </Col>
+        </Row>
+      )}
 
       <Form.Group className='mb-4 col-md-6' controlId='formLogin'>
         <Form.Label>Login</Form.Label>
@@ -111,7 +140,7 @@ const SignUp = () => {
         )}
       </Form.Group>
 
-      <Button variant='primary' type='success'>
+      <Button variant='success' type='submit'>
         Sign Up
       </Button>
     </Form>

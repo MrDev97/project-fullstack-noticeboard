@@ -12,8 +12,6 @@ const START_REQUEST = createActionName('START_REQUEST');
 const END_REQUEST = createActionName('END_REQUEST');
 const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 
-const ADD_USER = createActionName('ADD_USER');
-
 // actions
 export const startRequest = (payload) => ({ payload, type: START_REQUEST });
 export const endRequest = (payload) => ({ payload, type: END_REQUEST });
@@ -22,12 +20,12 @@ export const errorRequest = (payload) => ({ payload, type: ERROR_REQUEST });
 // thunks
 export const addRegistrationRequest = (user) => {
   return async (dispatch) => {
-    dispatch(startRequest({ name: 'ADD_USER' }));
+    dispatch(startRequest({ name: 'REGISTER_USER' }));
     try {
-      let res = await axios.post(`${API_URL}/auth/register`, user);
-      dispatch(endRequest({ name: 'ADD_USER' }));
+      await axios.post(`${API_URL}/auth/register`, user);
+      dispatch(endRequest({ name: 'REGISTER_USER' }));
     } catch (e) {
-      dispatch(errorRequest({ name: 'ADD_USER', error: e.message }));
+      dispatch(errorRequest({ name: 'REGISTER_USER', error: e.message }));
     }
   };
 };
@@ -35,14 +33,12 @@ export const addRegistrationRequest = (user) => {
 // initial state
 const initialState = {
   data: [],
-  request: { pending: false, error: null, success: null },
+  request: {},
 };
 
 // action creators
 const usersReducer = (statePart = initialState, action = {}) => {
   switch (action.type) {
-    case ADD_USER:
-      return { ...statePart, data: [...statePart.data, action.payload] };
     case START_REQUEST:
       return {
         ...statePart,
@@ -56,7 +52,11 @@ const usersReducer = (statePart = initialState, action = {}) => {
     case ERROR_REQUEST:
       return {
         ...statePart,
-        request: { pending: false, error: action.error, success: false },
+        request: {
+          pending: false,
+          error: action.payload.error,
+          success: false,
+        },
       };
     default:
       return statePart;
