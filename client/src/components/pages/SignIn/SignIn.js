@@ -32,10 +32,12 @@ const SignIn = () => {
     setStatus(true);
     dispatch(addLoginRequest(usr));
 
-    setTimeout(() => {
-      navigate('/');
-      setStatus(false);
-    }, 3000);
+    if (request.success) {
+      setTimeout(() => {
+        navigate('/');
+        setStatus(false);
+      }, 3000);
+    }
 
     setLogin('');
     setPassword('');

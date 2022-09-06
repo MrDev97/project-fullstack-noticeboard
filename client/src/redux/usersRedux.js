@@ -26,10 +26,16 @@ export const addRegistrationRequest = (user) => {
   return async (dispatch) => {
     dispatch(startRequest({ name: 'REGISTER_USER' }));
     try {
-      await axios.post(`${API_URL}/auth/register`, user);
+      let res = await axios.post(`${API_URL}/auth/register`, user);
       dispatch(endRequest({ name: 'REGISTER_USER' }));
     } catch (e) {
-      dispatch(errorRequest({ name: 'REGISTER_USER', error: e.message }));
+      dispatch(
+        errorRequest({
+          name: 'REGISTER_USER',
+          error: e.message,
+          status: e.response.status,
+        })
+      );
     }
   };
 };
@@ -42,7 +48,13 @@ export const addLoginRequest = (user) => {
       dispatch(loginUser(res.data));
       dispatch(endRequest({ name: 'LOGIN_USER' }));
     } catch (e) {
-      dispatch(errorRequest({ name: 'LOGIN_USER', error: e.message }));
+      dispatch(
+        errorRequest({
+          name: 'LOGIN_USER',
+          error: e.message,
+          status: e.response.status,
+        })
+      );
     }
   };
 };

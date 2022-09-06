@@ -38,10 +38,12 @@ const SignUp = () => {
     if (avatar) {
       setStatus(true);
       dispatch(addRegistrationRequest(fd));
-      setTimeout(() => {
-        navigate('/');
-        setStatus(false);
-      }, 3000);
+      if (request.success) {
+        setTimeout(() => {
+          navigate('/');
+          setStatus(false);
+        }, 3000);
+      }
       setAvatarError('');
       setLogin('');
       setPassword('');
