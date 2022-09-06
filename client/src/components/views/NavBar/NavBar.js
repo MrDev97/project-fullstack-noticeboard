@@ -35,6 +35,9 @@ const NavBar = () => {
             <Nav.Link as={NavLink} to='/auth/register'>
               Sign Up
             </Nav.Link>
+            <Nav.Link as={NavLink} to='/auth/login'>
+              Login
+            </Nav.Link>
           </Nav>
           <Form onSubmit={handleSubmit} className='d-flex my-2'>
             <Form.Control

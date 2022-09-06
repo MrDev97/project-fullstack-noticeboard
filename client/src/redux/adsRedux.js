@@ -75,7 +75,7 @@ export const editAdRequest = (ad) => {
     dispatch(startRequest({ name: 'EDIT_AD' }));
     try {
       let res = await axios.put(`${API_URL}/ads/${ad._id}`, ad);
-      dispatch(addAd(res.data));
+      dispatch(editAd(res.data));
       dispatch(endRequest({ name: 'EDIT_AD' }));
     } catch (e) {
       dispatch(errorRequest({ name: 'EDIT_AD', error: e.message }));
@@ -88,7 +88,7 @@ export const removeAdRequest = (ad) => {
     dispatch(startRequest({ name: 'REMOVE_AD' }));
     try {
       let res = await axios.delete(`${API_URL}/ads/${ad._id}`);
-      dispatch(addAd(res.data));
+      dispatch(removeAd(res.data));
       dispatch(endRequest({ name: 'REMOVE_AD' }));
     } catch (e) {
       dispatch(errorRequest({ name: 'REMOVE_AD', error: e.message }));
