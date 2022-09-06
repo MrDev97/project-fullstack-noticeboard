@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home/Home.js';
 import NotFound from './components/pages/NotFound/NotFound.js';
@@ -9,8 +9,16 @@ import AddAdForm from './components/features/AddAdForm/AddAdForm.js';
 import EditAdForm from './components/features/EditAdForm/EditAdForm.js';
 import SignUp from './components/pages/SignUpForm/SignUpForm.js';
 import SignIn from './components/pages/SignIn/SignIn.js';
+import { useDispatch } from 'react-redux';
+import { checkLoginRequest } from './redux/usersRedux';
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkLoginRequest());
+  }, [dispatch]);
+
   return (
     <MainLayout>
       <Routes>

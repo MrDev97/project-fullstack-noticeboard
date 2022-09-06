@@ -44,13 +44,39 @@ export const addLoginRequest = (user) => {
   return async (dispatch) => {
     dispatch(startRequest({ name: 'LOGIN_USER' }));
     try {
-      let res = await axios.post(`${API_URL}/auth/login`, user);
+      let res = await axios.post(`${API_URL}/auth/login`, user, {
+        withCredentials: true,
+        headers: {
+          Cookie: `user=${user.login}`,
+        },
+      });
       dispatch(loginUser(res.data));
       dispatch(endRequest({ name: 'LOGIN_USER' }));
     } catch (e) {
       dispatch(
         errorRequest({
           name: 'LOGIN_USER',
+          error: e.message,
+          status: e.response.status,
+        })
+      );
+    }
+  };
+};
+
+export const checkLoginRequest = () => {
+  return async (dispatch) => {
+    dispatch(startRequest({ name: 'CHECK_LOGIN' }));
+    try {
+      let res = await axios.get(`${API_URL}/auth/user`, {
+        withCredentials: true,
+      });
+      dispatch(loginUser(res.data));
+      dispatch(endRequest({ name: 'CHECK_LOGIN' }));
+    } catch (e) {
+      dispatch(
+        errorRequest({
+          name: 'CHECK_LOGIN',
           error: e.message,
           status: e.response.status,
         })
@@ -72,7 +98,7 @@ const usersReducer = (statePart = initialState, action = {}) => {
     case LOGIN_USER:
       return {
         ...statePart,
-        userLogged: true,
+        user: true,
       };
     case START_REQUEST:
       return {
