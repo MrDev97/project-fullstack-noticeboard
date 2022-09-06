@@ -38,12 +38,6 @@ const SignUp = () => {
     if (avatar) {
       setStatus(true);
       dispatch(addRegistrationRequest(fd));
-      if (request.success) {
-        setTimeout(() => {
-          navigate('/');
-          setStatus(false);
-        }, 3000);
-      }
       setAvatarError('');
       setLogin('');
       setPassword('');
@@ -51,6 +45,13 @@ const SignUp = () => {
       setTelephone('');
     }
   };
+
+  if (request.success) {
+    setTimeout(() => {
+      navigate('/');
+      setStatus(false);
+    }, 3000);
+  }
 
   return (
     <Form

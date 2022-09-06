@@ -63,7 +63,7 @@ export const addLoginRequest = (user) => {
 const initialState = {
   data: [],
   request: {},
-  userLogged: false,
+  user: null,
 };
 
 // action creators

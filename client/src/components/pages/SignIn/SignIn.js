@@ -32,16 +32,16 @@ const SignIn = () => {
     setStatus(true);
     dispatch(addLoginRequest(usr));
 
-    if (request.success) {
-      setTimeout(() => {
-        navigate('/');
-        setStatus(false);
-      }, 3000);
-    }
-
     setLogin('');
     setPassword('');
   };
+
+  if (request.success) {
+    setTimeout(() => {
+      navigate('/');
+      setStatus(false);
+    }, 3000);
+  }
 
   return (
     <Form onSubmit={validate(handleSubmit)} className='col-md-8 mx-auto my-4'>
