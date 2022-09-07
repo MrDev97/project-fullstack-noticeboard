@@ -26,7 +26,7 @@ export const addRegistrationRequest = (user) => {
   return async (dispatch) => {
     dispatch(startRequest({ name: 'REGISTER_USER' }));
     try {
-      let res = await axios.post(`${API_URL}/auth/register`, user);
+      await axios.post(`${API_URL}/auth/register`, user);
       dispatch(endRequest({ name: 'REGISTER_USER' }));
     } catch (e) {
       dispatch(
@@ -47,7 +47,7 @@ export const addLoginRequest = (user) => {
       let res = await axios.post(`${API_URL}/auth/login`, user, {
         withCredentials: true,
         headers: {
-          Cookie: `user=${user.login}`,
+          Authorization: `user=${user.login}; SameSite=Lax`,
         },
       });
       dispatch(loginUser(res.data));
