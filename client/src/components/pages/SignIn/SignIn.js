@@ -39,6 +39,7 @@ const SignIn = () => {
   if (request.success) {
     setTimeout(() => {
       navigate('/');
+      window.location.reload();
       setStatus(false);
     }, 3000);
   }
