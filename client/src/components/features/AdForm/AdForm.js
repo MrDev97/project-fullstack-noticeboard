@@ -1,11 +1,12 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../../redux/usersRedux';
 
 const AdForm = ({ action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -18,7 +19,7 @@ const AdForm = ({ action, actionText, ...props }) => {
   const [descriptionError, setDescriptionError] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  const user = 'Mike Willer';
+  const user = useSelector(getUser);
 
   const {
     register,
@@ -38,7 +39,11 @@ const AdForm = ({ action, actionText, ...props }) => {
     fd.append('image', image);
     fd.append('price', price);
     fd.append('location', location);
-    fd.append('user', user);
+    fd.append('user', user.id);
+
+    for (var pair of fd.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }  
 
     if (description && publishedDate && image) {
       action(fd);
@@ -132,7 +137,7 @@ const AdForm = ({ action, actionText, ...props }) => {
         />
         {image && (
           <small className='d-block form-text text-secondary mt-2'>
-            Uploaded file: {image.name}
+            Uploaded file: {image.name || image}
           </small>
         )}
         {imageError && (

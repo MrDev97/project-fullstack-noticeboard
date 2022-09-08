@@ -1,17 +1,17 @@
 import React from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Card, Image } from 'react-bootstrap';
 import { useParams } from 'react-router';
 import { useSelector } from 'react-redux';
 import { getAdById } from '../../../redux/adsRedux';
 import { Link, Navigate } from 'react-router-dom';
 import DeleteAd from '../../features/DeleteAd/DeleteAd';
 import { dateToString } from '../../../utils/dateToString';
-import { Card } from 'react-bootstrap';
-import Image from 'react-bootstrap/Image';
 import { IMGS_URL } from '../../../config';
+import { getUser } from '../../../redux/usersRedux';
 
 const SingleAd = () => {
   const { adId } = useParams();
+  const user = useSelector(getUser);
   const adData = useSelector((state) => getAdById(state, adId));
 
   if (!adData) return <Navigate to='/' />;
@@ -62,14 +62,16 @@ const SingleAd = () => {
                 <br />
                 {adData.description}
               </Card.Text>
-              <div className='mt-3 d-flex justify-content-end align-items-start'>
-                <Link to={`/ads/edit/${adId}`}>
-                  <Button className='m-2' variant='outline-info'>
-                    Edit
-                  </Button>
-                </Link>
-                <DeleteAd id={adData._id} />
-              </div>
+              {user && user.id === adData.user._id && (
+                <div className='mt-3 d-flex justify-content-end align-items-start'>
+                  <Link to={`/ads/edit/${adId}`}>
+                    <Button className='m-2' variant='outline-info'>
+                      Edit
+                    </Button>
+                  </Link>
+                  <DeleteAd id={adData._id} />
+                </div>
+              )}
             </Card.Body>
           </Col>
         </Row>

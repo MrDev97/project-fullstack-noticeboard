@@ -61,8 +61,11 @@ export const addAdRequest = (ad) => {
   return async (dispatch) => {
     dispatch(startRequest({ name: 'ADD_AD' }));
     try {
-      let res = await axios.post(`${API_URL}/ads`, ad);
+      let res = await axios.post(`${API_URL}/ads`, ad, {
+        withCredentials: true,
+      });
       dispatch(addAd(res.data));
+      dispatch(loadAdsRequest());
       dispatch(endRequest({ name: 'ADD_AD' }));
     } catch (e) {
       dispatch(errorRequest({ name: 'ADD_AD', error: e.message }));
@@ -70,12 +73,15 @@ export const addAdRequest = (ad) => {
   };
 };
 
-export const editAdRequest = (ad) => {
+export const editAdRequest = (ad, id) => {
   return async (dispatch) => {
     dispatch(startRequest({ name: 'EDIT_AD' }));
     try {
-      let res = await axios.put(`${API_URL}/ads/${ad._id}`, ad);
+      let res = await axios.put(`${API_URL}/ads/${id}`, ad, {
+        withCredentials: true,
+      });
       dispatch(editAd(res.data));
+      dispatch(loadAdsRequest());
       dispatch(endRequest({ name: 'EDIT_AD' }));
     } catch (e) {
       dispatch(errorRequest({ name: 'EDIT_AD', error: e.message }));
@@ -87,8 +93,11 @@ export const removeAdRequest = (ad) => {
   return async (dispatch) => {
     dispatch(startRequest({ name: 'REMOVE_AD' }));
     try {
-      let res = await axios.delete(`${API_URL}/ads/${ad._id}`);
+      let res = await axios.delete(`${API_URL}/ads/${ad}`, {
+        withCredentials: true,
+      });
       dispatch(removeAd(res.data));
+      dispatch(loadAdsRequest());
       dispatch(endRequest({ name: 'REMOVE_AD' }));
     } catch (e) {
       dispatch(errorRequest({ name: 'REMOVE_AD', error: e.message }));
@@ -99,7 +108,7 @@ export const removeAdRequest = (ad) => {
 // initial state
 const initialState = {
   data: [],
-  request: { pending: false, error: null, success: null },
+  request: {},
 };
 
 // action creators
@@ -110,13 +119,19 @@ const adsReducer = (statePart = initialState, action = {}) => {
     case ADD_AD:
       return { ...statePart, data: [...statePart.data, action.payload] };
     case REMOVE_AD:
-      return statePart.filter((ad) =>
-        ad.id === action.payload ? false : true
-      );
+      return {
+        ...statePart,
+        data: statePart.data.filter((ad) =>
+          ad._id === action.payload._id ? false : true
+        ),
+      };
     case EDIT_AD:
-      return statePart.map((ad) =>
-        ad.id === action.payload.id ? { ...ad, ...action.payload } : ad
-      );
+      return {
+        ...statePart,
+        data: statePart.data.map((ad) =>
+          ad.id === action.payload._id ? { ...ad, ...action.payload } : ad
+        ),
+      };
     case START_REQUEST:
       return {
         ...statePart,

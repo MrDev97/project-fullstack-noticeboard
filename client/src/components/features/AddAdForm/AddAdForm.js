@@ -9,7 +9,7 @@ const AddAdForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
-    dispatch(addAdRequest({ ...ad }));
+    dispatch(addAdRequest(ad));
     navigate('/');
   };
 

@@ -14,7 +14,7 @@ const EditAdForm = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (ad) => {
-    dispatch(editAdRequest({ ...ad, _id: adId }));
+    dispatch(editAdRequest(ad, adId));
     navigate('/');
   };
 

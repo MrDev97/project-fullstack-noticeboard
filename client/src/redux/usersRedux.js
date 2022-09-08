@@ -3,6 +3,7 @@ import { API_URL } from '../config';
 
 // selectors
 export const getRequest = ({ users }) => users.request;
+export const getUser = ({ users }) => users.user;
 
 // action name creator
 const reducerName = 'users';
@@ -98,7 +99,7 @@ const usersReducer = (statePart = initialState, action = {}) => {
     case LOGIN_USER:
       return {
         ...statePart,
-        user: true,
+        user: action.payload,
       };
     case START_REQUEST:
       return {

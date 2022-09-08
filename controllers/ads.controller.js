@@ -1,6 +1,5 @@
 const Ad = require('../models/ad.model');
 const fs = require('fs');
-const path = require('path');
 const escapeHTML = require('../utils/escapeHTML');
 const getImageFileType = require('../utils/getImageFileType');
 
@@ -48,7 +47,6 @@ exports.postOne = async (req, res) => {
       req.file &&
       ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
     ) {
-      console.log(title);
       const newAd = new Ad({
         title,
         description,
@@ -59,7 +57,7 @@ exports.postOne = async (req, res) => {
         user: user.id,
       });
       await newAd.save();
-      res.status(201).json({ message: 'Ad Successfully Created!' });
+      res.status(201).json(newAd);
     } else {
       fs.unlinkSync(req.file.path);
       res.status(400).json({ message: 'Bad Request' });
@@ -84,7 +82,7 @@ exports.deleteOne = async (req, res) => {
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
       }
-      res.json({ message: 'Successfully Deleted!' });
+      res.json(ad);
     } else res.status(403).json({ message: 'Forbidden Action!' });
   } catch (err) {
     res.status(500).json({ message: err.messsage });
@@ -145,7 +143,7 @@ exports.putOne = async (req, res) => {
           },
           { new: true }
         );
-        res.status(201).json({ message: 'Ad Successfully Updated!' });
+        res.status(201).json(updatedAd);
       } else {
         fs.unlinkSync(req.file.path);
         res.status(403).json({ message: 'Forbidden Action!' });

@@ -3,10 +3,11 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Modal } from 'react-bootstrap';
 import { removeAdRequest } from '../../../redux/adsRedux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DeleteAd = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -15,6 +16,7 @@ const DeleteAd = (props) => {
   const handleRemove = () => {
     dispatch(removeAdRequest(props.id));
     setShow(false);
+    navigate('/');
   };
 
   return (
@@ -40,11 +42,9 @@ const DeleteAd = (props) => {
           <Button variant='secondary' onClick={handleClose}>
             Cancel
           </Button>
-          <Link to={`/`}>
-            <Button variant='danger' onClick={handleRemove}>
-              Remove
-            </Button>
-          </Link>
+          <Button variant='danger' onClick={handleRemove}>
+            Remove
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
