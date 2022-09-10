@@ -6,23 +6,13 @@ import store from './redux/store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
 
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(
-//   // <React.StrictMode>
-//   <BrowserRouter>
-//     <Provider store={store}>
-//       <App />
-//     </Provider>
-//   </BrowserRouter>
-//   // </React.StrictMode>
-// );
-
-const Root = () => (
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  // <React.StrictMode>
   <BrowserRouter>
     <Provider store={store}>
       <App />
     </Provider>
   </BrowserRouter>
+  // </React.StrictMode>
 );
-
-ReactDOM.render(<Root />, document.getElementById('root'));
