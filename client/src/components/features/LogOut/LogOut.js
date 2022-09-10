@@ -11,6 +11,7 @@ const LogOut = () => {
   useEffect(() => {
     dispatch(addLogoutRequest(user));
     navigate('/');
+    window.location.reload();
   }, [dispatch]);
 };
 
