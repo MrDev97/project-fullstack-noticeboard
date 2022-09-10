@@ -34,11 +34,13 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(helmet());
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(
   session({
     secret: shortid.generate(),
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: oneDay },
     store: MongoStore.create({
       mongoUrl: dbConnectionURL,
       collection: 'sessions',
