@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
 import { Alert, Progress } from 'reactstrap';
-import Ad from '../Ad/Ad';
+import Ad from '../../common/Ad/Ad';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllAds, loadAdsRequest, getRequest } from '../../../redux/adsRedux';

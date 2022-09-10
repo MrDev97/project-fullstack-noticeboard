@@ -41,10 +41,6 @@ const AdForm = ({ action, actionText, ...props }) => {
     fd.append('location', location);
     fd.append('user', user.id);
 
-    for (var pair of fd.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }  
-
     if (description && publishedDate && image) {
       action(fd);
       setTitle('');

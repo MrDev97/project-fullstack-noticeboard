@@ -4,9 +4,9 @@ import { useParams } from 'react-router';
 import { getAdById } from '../../../redux/adsRedux';
 import { editAdRequest } from '../../../redux/adsRedux';
 import { useNavigate, Navigate } from 'react-router-dom';
-import AdForm from '../AdForm/AdForm';
+import AdForm from '../../pages/AdForm/AdForm';
 
-const EditAdForm = () => {
+const EditAd = () => {
   const { adId } = useParams();
   const adData = useSelector((state) => getAdById(state, adId));
 
@@ -24,4 +24,4 @@ const EditAdForm = () => {
   );
 };
 
-export default EditAdForm;
+export default EditAd;

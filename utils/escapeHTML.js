@@ -1,10 +1,5 @@
 const escapeHTML = (htmlStr) => {
-  return htmlStr
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return htmlStr.replace(/(<([^>]+)>)/gi, '');
 };
 
 module.exports = escapeHTML;

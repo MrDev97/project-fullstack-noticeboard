@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addLoginRequest, getRequest } from '../../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
 
-const SignIn = () => {
+const LoginIn = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState(false);
@@ -108,4 +108,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default LoginIn;
