@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
-import Ads from '../../features/Ads/Ads';
+import Ads from '../../views/Ads/Ads';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../../redux/usersRedux';
