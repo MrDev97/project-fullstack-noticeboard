@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar, Nav, Container, Form, Button } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import { loadSearchedAdsRequest } from '../../../redux/adsRedux';
 import { getUser } from '../../../redux/usersRedux';
+
 
 const NavBar = () => {
   const user = useSelector(getUser);
@@ -43,6 +43,11 @@ const NavBar = () => {
                   Login
                 </Nav.Link>
               </>
+            )}
+            {user && (
+              <Nav.Link as={NavLink} to='/auth/logout'>
+                Logout
+              </Nav.Link>
             )}
           </Nav>
           <Form onSubmit={handleSubmit} className='d-flex my-2'>

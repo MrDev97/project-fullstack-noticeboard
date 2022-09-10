@@ -9,7 +9,7 @@ const Ad = (props) => {
     <Col>
       <Card bg={'light'}>
         <Card.Img
-          style={{ resizeMode: 'cover', maxHeight: 400 }}
+          style={{ resizeMode: 'cover', minHeight: 400, maxHeight: 400 }}
           crossOrigin='anonymous'
           src={IMGS_URL + props.image}
         />

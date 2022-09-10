@@ -11,6 +11,7 @@ import SignUp from './components/pages/SignUpForm/SignUpForm.js';
 import SignIn from './components/pages/SignIn/SignIn.js';
 import { useDispatch } from 'react-redux';
 import { checkLoginRequest } from './redux/usersRedux';
+import LogOut from './components/features/LogOut/LogOut.js';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const App = () => {
         <Route path='/ads/add' element={<AddAdForm />} />
         <Route exact path='/ads/edit/:adId' element={<EditAdForm />} />
         <Route path='/auth/login' element={<SignIn />} />
+        <Route path='/auth/logout' element={<LogOut />} />
         <Route path='/auth/register' element={<SignUp />} />
         <Route path='/ads/search/:searchPhrase' element={<Search />} />
         <Route path='*' element={<NotFound />} />

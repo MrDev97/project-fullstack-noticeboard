@@ -14,6 +14,7 @@ const END_REQUEST = createActionName('END_REQUEST');
 const ERROR_REQUEST = createActionName('ERROR_REQUEST');
 
 const LOGIN_USER = createActionName('LOGIN_USER');
+const LOGOUT_USER = createActionName('LOGOUT_USER');
 
 // actions
 export const startRequest = (payload) => ({ payload, type: START_REQUEST });
@@ -21,6 +22,7 @@ export const endRequest = (payload) => ({ payload, type: END_REQUEST });
 export const errorRequest = (payload) => ({ payload, type: ERROR_REQUEST });
 
 export const loginUser = (payload) => ({ payload, type: LOGIN_USER });
+export const logoutUser = (payload) => ({ payload, type: LOGOUT_USER });
 
 // thunks
 export const addRegistrationRequest = (user) => {
@@ -86,6 +88,27 @@ export const checkLoginRequest = () => {
   };
 };
 
+export const addLogoutRequest = (user) => {
+  return async (dispatch) => {
+    dispatch(startRequest({ name: 'LOGOUT_USER' }));
+    try {
+      await axios.post(`${API_URL}/auth/logout`, user, {
+        withCredentials: true,
+      });
+      dispatch(logoutUser());
+      dispatch(endRequest({ name: 'LOGOUT_USER' }));
+    } catch (e) {
+      dispatch(
+        errorRequest({
+          name: 'LOGOUT_USER',
+          error: e.message,
+          status: e.response.status,
+        })
+      );
+    }
+  };
+};
+
 // initial state
 const initialState = {
   data: [],
@@ -100,6 +123,11 @@ const usersReducer = (statePart = initialState, action = {}) => {
       return {
         ...statePart,
         user: action.payload,
+      };
+    case LOGOUT_USER:
+      return {
+        ...statePart,
+        user: null,
       };
     case START_REQUEST:
       return {
