@@ -28,15 +28,13 @@ const LoginIn = () => {
       login,
       password,
     };
-
     setStatus(true);
     dispatch(addLoginRequest(usr));
-
     setLogin('');
     setPassword('');
   };
 
-  if (request.success) {
+  if (request.success && status) {
     setTimeout(() => {
       navigate('/');
       window.location.reload();

@@ -46,7 +46,7 @@ const SignUp = () => {
     }
   };
 
-  if (request.success) {
+  if (request.success && status) {
     setTimeout(() => {
       navigate('/');
       window.location.reload();

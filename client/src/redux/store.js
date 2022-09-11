@@ -8,15 +8,16 @@ const subreducers = {
   users: usersReducer,
 };
 
+let reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__
+  ? window.__REDUX_DEVTOOLS_EXTENSION__()
+  : (f) => f;
+
+if (process.env.NODE_ENV === 'production') reduxDevTools = '';
+
 const reducer = combineReducers(subreducers);
 const store = createStore(
   reducer,
-  compose(
-    applyMiddleware(thunk),
-    // window.__REDUX_DEVTOOLS_EXTENSION__
-    //   ? window.__REDUX_DEVTOOLS_EXTENSION__()
-    //   : (f) => f
-  )
+  compose(applyMiddleware(thunk), reduxDevTools)
 );
 
 export default store;
